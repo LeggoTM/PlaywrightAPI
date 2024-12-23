@@ -43,7 +43,22 @@ test('API Testing GET config file', async ({ request }) => {
     console.log(await bookingResponse.json());
 });
 
-test('Get a specific booking', async ({ request }) => {
+test('Get a specific booking with path', async ({ request }) => {
     const bookingResponse = await request.get('/booking/1387');
+    console.log(await bookingResponse.json());
+});
+
+test('Get a specific booking with query in url', async ({ request }) => {
+    const bookingResponse = await request.get('/booking?firstname=John&lastname=Smith');
+    console.log(await bookingResponse.json());
+});
+
+test('Get a specific booking with query as params', async ({ request }) => {
+    const bookingResponse = await request.get('/booking', {
+        params: {
+            firstname: 'John',
+            lastname: 'Smith'
+        }
+    });
     console.log(await bookingResponse.json());
 });
