@@ -4,19 +4,29 @@ let globalReqContext: APIRequestContext;
 
 test.beforeAll('Initialize BaseURL', async() => {
     globalReqContext = await request.newContext({
-        baseURL: 'https://restful-booker.herokuapp.com'
+        baseURL: 'https://restful-booker.herokuapp.com',
+        extraHTTPHeaders: {
+            Accept: 'application/json'
+        }
     })
 });
 
 test('API Testing GET', async ({ request }) => {
-   const bookingResponse = await request.get('https://restful-booker.herokuapp.com/booking');
+   const bookingResponse = await request.get('https://restful-booker.herokuapp.com/booking', {
+    headers: {
+        Accept: 'application/json'
+    }
+   });
    
    console.log(await bookingResponse.json());
 });
 
 test('API Testing baseURL', async () => {
     const apiReqContext = await request.newContext({
-        baseURL: 'https://restful-booker.herokuapp.com'
+        baseURL: 'https://restful-booker.herokuapp.com',
+        extraHTTPHeaders: {
+            Accept: 'application/json'
+        }
     });
 
     const bookingResponse = await apiReqContext.get('/booking');
