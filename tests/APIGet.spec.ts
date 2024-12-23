@@ -1,4 +1,4 @@
-import { test, request, APIRequestContext } from '@playwright/test';
+import { test, request, APIRequestContext, expect } from '@playwright/test';
 
 let globalReqContext: APIRequestContext;
 
@@ -61,4 +61,22 @@ test('Get a specific booking with query as params', async ({ request }) => {
         }
     });
     console.log(await bookingResponse.json());
+});
+
+test('Assert response of a booking', async ({ request }) => {
+    const bookingResponse = await request.get('/booking/99');
+    console.log(await bookingResponse.json());
+    expect(bookingResponse.status()).toBe(200);
+    expect(bookingResponse.ok()).toBeTruthy();
+    expect(await bookingResponse.json()).toMatchObject({
+        firstname: 'John',
+        lastname: 'Smith',
+        totalprice: 111,
+        depositpaid: true,
+        bookingdates: { checkin: '2018-01-01', checkout: '2019-01-01' },
+        additionalneeds: 'Breakfast'
+    });
+
+    const parsedJSON = await bookingResponse.json();
+    expect(parsedJSON.firstname).toEqual('John');
 });
